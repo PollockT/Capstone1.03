@@ -1,0 +1,42 @@
+﻿@{
+    ViewData["Title"] = $"{Model.Employee.FirstName} {Model.Employee.LastName}";
+}
+@using ServiceDesk.Models.EmployeeViewModels
+@using System.Collections.Generic
+@model EmployeeDetails
+
+<h3>Employee Details</h3>
+<p>
+    Name: @Model.Employee.FirstName @Model.Employee.LastName <br>
+    Company: @Model.Employee.Department <br>
+    Phone: @Model.Employee.PhoneNumber <br>
+    Email: @Model.Employee.EmailAddress <br>
+    Building Address: @Model.Employee.Address <br>
+    Date Added: @Model.Employee.DateAdded.ToString("d")
+</p>
+
+<h3>Open Tickets: @Model.OpenTicketCount</h3>
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Date Added</th>
+        <th>Urgent</th>
+    </tr>
+    @foreach (var ticket in Model.Ticket)
+    {
+        <tr>
+            <th>
+                <a asp-action="Open" asp-controller="Tickets" asp-route-id="@ticket.Id">@ticket.Title</a>
+            </th>
+            <th>@ticket.DateAdded.ToString("d")</th>
+            @if (ticket.IsUrgent)
+            {
+                <th>&#10004;</th>
+            }
+            else
+            {
+                <th></th>
+            }
+        </tr>
+    }
+</table>
