@@ -26,7 +26,7 @@
     @Model.Ticket.Description
 </p>
 
-<h3>Technician Time: @(TimeSpan.FromHours(Model.Times.Sum(time => (time.Time.End - time.Time.Start).TotalHours)).ToString("h\\:mm"))</h3>
+<h3>Technician Time: @(TimeSpan.FromHours(Model.Times.Sum(time => (time.Time.EndTime - time.Time.StartTime).TotalHours)).ToString("h\\:mm"))</h3>
 <table>
     <tr>
         <th>Technician</th>
@@ -44,13 +44,13 @@
         <tr>
             @{
                 var rate = time.Technician.GetPayRate();
-                var amount = (time.Time.End - time.Time.Start).TotalHours * rate;
+                var amount = (time.Time.EndTime - time.Time.StartTime).TotalHours * rate;
                 total += amount;
             }
             <th>@time.Technician.FirstName @time.Technician.LastName</th>
-            <th>@time.Time.Start</th>
-            <th>@time.Time.End</th>
-            <th>@((time.Time.End - time.Time.Start).ToString("h\\:mm"))</th>
+            <th>@time.Time.StartTime</th>
+            <th>@time.Time.EndTime</th>
+            <th>@((time.Time.EndTime - time.Time.StartTime).ToString("h\\:mm"))</th>
             <th>$@rate/hr</th>
             <th>$@amount.ToString("F2")</th>
         </tr>

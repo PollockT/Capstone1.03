@@ -17,7 +17,7 @@ namespace ServiceDesk.Models.EmployeeViewModels
         /// List of tickets associated with client
         /// </summary>
         /// <returns>client's ticket list</returns>
-        public IEnumerable<Ticket> Ticket { get; set; }
+        public IEnumerable<Ticket> Tickets { get; set; }
 
         /// <summary>
         /// Count of open tickets.

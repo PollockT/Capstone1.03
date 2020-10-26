@@ -39,9 +39,10 @@ namespace ServiceDesk
         /// <param name="services">The service container for this application</param>
         public void ConfigureServices(IServiceCollection services)
         {
+            
             services.AddMvc();
 
-            services.AddDbContext<ServiceDeskContext>(options => options.UseSqlServer(_configuration["connectionString"]));
+            services.AddDbContext<ServiceDeskContext>(options => options.UseSqlite(_configuration["connectionString"]));
 
             services.AddIdentity<Technician, IdentityRole>().AddEntityFrameworkStores<ServiceDeskContext>().AddDefaultTokenProviders();
 
@@ -78,13 +79,13 @@ namespace ServiceDesk
                     ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
                 });
             }
-
+            
             app.UseStaticFiles();
 
             app.UseAuthentication();
 
             app.UseMvc(routes =>
-            {
+            {                
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Ticket}/{action=All}/{id?}");

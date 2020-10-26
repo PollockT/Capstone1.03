@@ -40,7 +40,7 @@ namespace ServiceDesk.Controllers
             // var end = DateTime.Now;
             // var start = end - timeSpan;
 
-            // var openEvents = (await _context.Tickets.Where(ticket => ticket.DateAdded > start || (ticket.DateAdded <= start && (ticket.DateClosed > start || ticket.Open))).Select(ticket => ticket.DateAdded < start ? start : ticket.DateAdded).ToListAsync()).Select(time => (time, true));
+            // var openEvents = (await _context.Tickets.Where(ticket => ticket.DateAdded > start || (ticket.DateAdded <= start && (ticket.DateClosed > start || ticket.Status))).Select(ticket => ticket.DateAdded < start ? start : ticket.DateAdded).ToListAsync()).Select(time => (time, true));
             // var closeEvents = (await _context.Tickets.Where(ticket => ticket.DateClosed > start).Select(ticket => ticket.DateClosed).ToListAsync()).Select(time => (time, false));
 
             // var events = new List<IEnumerable<(DateTime, bool)>> { openEvents, closeEvents }.SelectMany(ticket => ticket); OrderBy<IQueryable<(DateTime, bool)>, bool>((time, open) => true);
@@ -51,7 +51,8 @@ namespace ServiceDesk.Controllers
                 AverageWait = new TimeSpan(0, 0, 0),
                 EmptyQueuePercentage = 0,
                 TicketsNotAddressedSameDay = 15,
-                TechnicianIdleHours = await _context.Users.GroupJoin(_context.TechnicianTicketTime, technician => technician.UserName, time => time.TechnicianId, (technician, times) => new { Technician = technician, Time = 8 }).ToAsyncEnumerable().Select(techTime => (techTime.Technician, techTime.Time)).ToList()
+                TechnicianIdleHours = await _context.Users.GroupJoin(_context.TechnicianTicketTime, technician => technician.UserName, time => time.TechnicianId, 
+                    (technician, times) => new { Technician = technician, Time = 8 }).ToAsyncEnumerable().Select(techTime => (techTime.Technician, techTime.Time)).ToList()
             };
             return View(details);
         }

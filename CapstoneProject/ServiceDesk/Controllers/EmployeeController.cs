@@ -37,7 +37,7 @@ namespace ServiceDesk.Controllers
         [HttpGet]
         public async Task<IActionResult> All()
         {
-            var employees = await _context.Employee.GroupJoin(_context.Ticket.Where(ticket => ticket.Open), employee => employee.Id, 
+            var employees = await _context.Employee.GroupJoin(_context.Ticket.Where(ticket => ticket.Status), employee => employee.Id, 
                 ticket => ticket.EmployeeId, (employee, ticket) => new EmployeeDetails { Employee = employee, Ticket = ticket, OpenTicketCount = ticket.Count() }
                 ).OrderByDescending(details => details.Ticket.Count()).ToListAsync();
             return View(employees);
@@ -108,7 +108,7 @@ namespace ServiceDesk.Controllers
         {
             ticket.DateAdded = DateTime.Now;
             ticket.IsUrgent = false;
-            ticket.Open = true;
+            ticket.Status = true;
 
             _context.Ticket.Add(ticket);
 
