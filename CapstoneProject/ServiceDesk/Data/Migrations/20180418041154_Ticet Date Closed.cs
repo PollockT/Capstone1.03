@@ -17,7 +17,7 @@ namespace ServiceDesk.Data.Migrations
         {
             migrationBuilder.AddColumn<DateTime>(
                 name: "DateClosed",
-                table: "Ticket",
+                table: "Tickets",
                 nullable: false,
                 defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
         }

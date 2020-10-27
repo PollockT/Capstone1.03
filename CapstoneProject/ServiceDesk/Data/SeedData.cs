@@ -246,16 +246,16 @@ namespace ServiceDesk.Data
                 }
             }
 
-            context.Employee.AddRange(_employee);
+            context.Employees.AddRange(_employee);
 
             context.SaveChanges();
 
-            foreach (var employee in context.Employee)
+            foreach (var employee in context.Employees)
             {
                 var ticketCount = randGenerator.Next(0, 15);
                 for (var i = 0; i < ticketCount; i++)
                 {
-                    context.Ticket.Add(new Ticket
+                    context.Tickets.Add(new Ticket
                     {
                         EmployeeId = employee.Id,
                         Title = $"{employee.Department}: Case {i}",
@@ -271,14 +271,14 @@ namespace ServiceDesk.Data
 
             context.SaveChanges();
 
-            foreach (var ticket in context.Ticket)
+            foreach (var ticket in context.Tickets)
             {
                 var workTimesCount = randGenerator.Next(0, 10);
                 for (var i = 0; i < workTimesCount; i++)
                 {
                     var start = ticket.DateAdded.AddHours(randGenerator.Next(1, 60));
                     var end = start.AddMinutes(randGenerator.Next(15, 60));
-                    context.TechnicianTicketTime.Add(new TechnicianTicketTime
+                    context.TechnicianTicketTimes.Add(new TechnicianTicketTime
                     {
                         Start = start,
                         End = end,

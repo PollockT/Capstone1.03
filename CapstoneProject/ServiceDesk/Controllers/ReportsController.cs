@@ -16,7 +16,7 @@ namespace ServiceDesk.Controllers
     /// For handling reports
     /// </summary>
     [Authorize(Roles = DataConstants.AdministratorRole)]
-    public class ReportController : Controller
+    public class ReportsController : Controller
     {
         private ServiceDeskContext _context;
 
@@ -24,7 +24,7 @@ namespace ServiceDesk.Controllers
         /// Initializes this controller
         /// </summary>
         /// <param name="context">context of the technician</param>
-        public ReportController(ServiceDeskContext context)
+        public ReportsController(ServiceDeskContext context)
         {
             _context = context;
         }
@@ -47,11 +47,11 @@ namespace ServiceDesk.Controllers
 
             var details = new ReportDetails
             {
-                AverageQueueLength = await _context.Ticket.Where(ticket => ticket.Open).CountAsync(),
+                AverageQueueLength = await _context.Tickets.Where(ticket => ticket.Open).CountAsync(),
                 AverageWait = new TimeSpan(0, 0, 0),
                 EmptyQueuePercentage = 0,
                 TicketsNotAddressedSameDay = 15,
-                TechnicianIdleHours = await _context.Users.GroupJoin(_context.TechnicianTicketTime, technician => technician.UserName, time => time.TechnicianId, 
+                TechnicianIdleHours = await _context.Users.GroupJoin(_context.TechnicianTicketTimes, technician => technician.UserName, time => time.TechnicianId, 
                     (technician, times) => new { Technician = technician, Time = 8 }).ToAsyncEnumerable().Select(techTime => (techTime.Technician, techTime.Time)).ToList()
             };
             return View(details);

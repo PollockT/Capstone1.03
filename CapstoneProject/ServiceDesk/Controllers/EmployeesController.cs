@@ -17,15 +17,18 @@ namespace ServiceDesk.Controllers
     /// Controller for Clients
     /// </summary>
     [Authorize]
-    public partial class EmployeeController : Controller
+    public partial class EmployeesController : Controller
     {
+        /// <summary>
+        /// 
+        /// </summary>
         private ServiceDeskContext _context;
 
         /// <summary>
         /// Initializes _context
         /// </summary>
         /// <param name="context">context of client</param>
-        public EmployeeController(ServiceDeskContext context)
+        public EmployeesController(ServiceDeskContext context)
         {
             _context = context;
         }
@@ -37,7 +40,7 @@ namespace ServiceDesk.Controllers
         [HttpGet]
         public async Task<IActionResult> All()
         {
-            var employees = await _context.Employee.GroupJoin(_context.Ticket.Where(ticket => ticket.Open), employee => employee.Id, 
+            var employees = await _context.Employees.GroupJoin(_context.Tickets.Where(ticket => ticket.Open), employee => employee.Id, 
                 ticket => ticket.EmployeeId, (employee, ticket) => new EmployeeDetails { Employee = employee, Tickets = ticket, OpenTicketCount = ticket.Count() }
                 ).OrderByDescending(details => details.Tickets.Count()).ToListAsync();
             return View(employees);
@@ -51,8 +54,8 @@ namespace ServiceDesk.Controllers
         [HttpGet]
         public async Task<IActionResult> Open([FromRoute] Guid id)
         {
-            var employee = await _context.Employee.FindAsync(id);
-            var tickets = await _context.Ticket.Where(ticket => ticket.EmployeeId == id).ToListAsync();
+            var employee = await _context.Employees.FindAsync(id);
+            var tickets = await _context.Tickets.Where(ticket => ticket.EmployeeId == id).ToListAsync();
 
             var details = new EmployeeDetails
             {
@@ -82,7 +85,7 @@ namespace ServiceDesk.Controllers
         public async Task<IActionResult> Add([FromForm] Employee employee)
         {
             employee.DateAdded = DateTime.Now;
-            _context.Employee.Add(employee);
+            _context.Employees.Add(employee);
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Open), new { id = employee.Id });
@@ -110,11 +113,11 @@ namespace ServiceDesk.Controllers
             ticket.IsUrgent = false;
             ticket.Open = true;
 
-            _context.Ticket.Add(ticket);
+            _context.Tickets.Add(ticket);
 
             await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(TicketController.Open), "Tickets", new { id = ticket.Id });
+            return RedirectToAction(nameof(TicketsController.Open), "Tickets", new { id = ticket.Id });
         }
     }
 }

@@ -16,17 +16,17 @@ namespace ServiceDesk.Data
         /// <summary>
         /// The collection of clients
         /// </summary>
-        public DbSet<Employee> Employee { get; set; }
+        public DbSet<Employee> Employees { get; set; }
 
         /// <summary>
         /// The collection of tickets
         /// </summary>
-        public DbSet<Ticket> Ticket { get; set; }
+        public DbSet<Ticket> Tickets { get; set; }
 
         /// <summary>
         /// The collection of TechnicianTicket pivot models
         /// </summary>
-        public DbSet<TechnicianTicketTime> TechnicianTicketTime { get; set; }
+        public DbSet<TechnicianTicketTime> TechnicianTicketTimes { get; set; }
 
         /// <summary>
         /// The constructor for this context

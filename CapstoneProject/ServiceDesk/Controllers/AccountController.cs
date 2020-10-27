@@ -79,7 +79,7 @@ namespace ServiceDesk.Controllers
                 }
                 else
                 {
-                    return RedirectToAction(nameof(TicketController.All), "Tickets");
+                    return RedirectToAction(nameof(TicketsController.All), "Tickets");
                 }
             }
 
